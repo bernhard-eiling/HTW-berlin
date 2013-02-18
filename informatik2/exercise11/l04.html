@@ -1,0 +1,212 @@
+<h1>52.219 Hashing</h1>
+So far, to find something in a tree, or in a list, we have searched.
+However, there is another technique called <i>hashing.</i> 
+Assume we are
+looking for some element <i> e </i> in a set <i> S, </i> where 
+<i> S </i> may be implemented as
+a vector. We apply some function to <i> e, </i> hash(<i>e</i>), and this delivers the
+position of <i> e </i> in <i> S, </i> and we can then go directly to 
+that location to get <i> e </i>
+or information on <i>e.</i> For example, <i>e</i> might be the key to a record,
+such as someone's name, and we wish to extract details/info on that
+person. <i>e</i> might be a telephone number and we want to know address, or
+<i>e</i> might be address and we want telephone number
+<p>
+(Question: consider this ... how do you think directory enquiries
+works? You know, you phone up BT and ask for the phone number of 
+Brad Cox, lives in Anstruther, I think. If it's an on-line system
+(ie, they don't lug around all the telephone directories for all of
+the cities and regions in the UK, do they? Just not physically possible 
+is it? ) how does it work? Gulp!)
+<p>
+There are 2 broad kinds of hashing, <i>open</i> hashing, and <i>closed</i>
+hashing.
+<h2>Open Hashing</h2>
+The essential idea is that the (possibly infinite) set of potential
+set members is partitioned into a finite number of classes.
+We have a vector, lets say of n element, where each element of the
+vector points to a list. So, we have n classes, and each class is
+stored as a list. Therefore, hash(<i>e</i>) delivers the class of <i>e</i>.
+We will call <i>e</i> the "key" and hash(<i>e</i>) "the hash value" of
+<i>e</i>.
+<p>
+Sometimes this vector is referred to as a "bucket table" where each
+element can be thought of as a bucket containing a group of entries.
+<p>
+What we now want to do is define a hash function that distributes
+keys evenly (uniformly) over the bucket table, otherwise we
+under-utilise the bucket table, and have buckets that contain too
+much, resulting in too much sequential search. In worst case we would
+have everything hashing to one bucket and only sequential search.
+It is not always clear that we can select a function hash so that a
+typical set will have its members distributed fairly evenly across
+the buckets.
+<center>
+    <a href="hash-open.scm">see /home/s7/pat/scheme/pub/hash-open.scm</a>
+</center>
+
+<h2>Closed Hashing</h2>
+A closed hash table keeps the members of the set in the bucket table 
+rather than using that table to store list headers. Consequently only
+one element is in any bucket. So, what happens if hash(x) = hash(y)
+when x and y are different? That is, what happens when we have a 
+<font color="red">collision</font>?
+
+We have a "rehash strategy". A "collision" occurs when we have i = hash(x)
+and the ith element of the table is already occupied (by something
+other than x). The rehash strategy chooses a sequence of alternative
+locations, hash-1(x), hash-2(x), hash-3(x), ..., within the table.
+We try each one of these locations in turn until we encounter an
+empty (unoccupied) location. If none exists, and we have exhausted the
+rehash strategy, we assume that the table is full and that we cannot
+insert x.
+<p>
+A simple rehashing strategy, called "linear rehashing" is as
+follows:
+<pre>
+             hash-i(x) = (hash(x) + i) mod B
+</pre>
+where there are B buckets in the hash table.
+<p>
+Initially the table is empty, and each bucket holds a special value
+"empty", ie a value different from any value that we might insert
+into the table.
+<center>
+<a href="hash-closed.scm">see /home/s7/pat/scheme/pub/hash-closed.scm</a>
+</center>
+
+<h2>More Complex Rehash Strategy</h2>
+The above linear rehashing strategy is simple (and that's nice) but
+probably not great. What might be better is to have an ordered list
+of hashing functions. That is, if the 1st hashing function results in
+a collision, use the second rehashing function, and so on, until 
+the item is found, or an empty location is found, or we have tried
+all of the hashing functions. One technique is to generate a random
+list of integers, for example '(9 2 6 1 5 3 4 7 8), when creating the
+hash table, and storing this list with the hash table. When a
+collision occurs on hash(e) we add the first number from this list to
+hash(e), and so on until the list has been exhausted.
+
+<h2>Deletion from Hash Table</h2>
+When we delete from an open hash table, we just hash to the class,
+and then delete from a list (and this has already been covered). 
+When it is a closed hash table, things are a wee bit more
+complicated. We hash (and possibly rehash) to the bucket and mark the
+contents of the bucket as deleted, using some symbol that cannot
+occur as a valid key. So, assume we have deleted item Ex. Fair and well, 
+but when we later search for an item Ey, and its key hashes to the same 
+bucket as the deleted key Ex, and is marked as deleted, do we assume
+that Ey has been deleted? No, we must continue searching for Ey
+until we find it, hash to an unoccupied entry, or run out of
+rehashes. The same holds true if we later search for Ex. It will
+eventually hash to the deleted bucket, but again we cannot assume
+that it is not present, and we must again try all rehashes to be sure.
+<p>
+We could get smart, and introduce a flag with each bucket, to say if
+the item is present or deleted. Consequently if we hash Ex and find
+the key but it is deleted, we know for sure that it is not present.
+Similarly, when we hash Ey and collide with a deleted key, we can
+determine if it was Ey that was deleted. Of course, we have a small
+space overhead with the flag.
+<p>
+Deletions are a bit of a pain, and we can eradicate them by
+rebuilding the hash table every so often. That is, get the
+non-deleted entries in the table, and hash them into a new table.
+Really, this is yet another form of garbage collection.
+
+<h2>An example of Open Hashing</h2>
+The following text (an abstract from a paper I wrote) was hashed into
+an open hash table of 20 buckets, using the hash function hash-1 (see
+source file). That is, we convert each character in a word to its
+ascii number, and sum that, then take the sum modulo the number of
+buckets. Here is the text:
+<hr>
+<i>An empirical study of randomly generated binary constraint satisfaction 
+problems reveals that for problems with a given number of variables, domain 
+size, and connectivity there is a critical level of constraint tightness at 
+which a phase transition occurs. At the phase transition problems change from 
+being soluble to insoluble, and the difficulty of problems increases 
+dramatically. A theory developed by Williams and Hogg, and independently
+developed by Smith, predicts where the hardest problems should occur. It is 
+shown that the theory is in close agreement with the empirical results, except 
+when problems are small and involve few constraints.</i>
+<hr>
+What now follows is a trace of the scheme session. The open hashing
+software is loaded 
+<a href="hash-open.scm">(and again, look at the source please as it is
+part of the notes)</a>, then a 20 bucket open hash table is created,
+where the keys are strings (test for membership is string=?), and the
+hashing function is hash-1 <a href="hash-open.scm">(see source file).</a>
+The above data file is
+then hashed into the 20 bucket open hash table (via fn file->table)
+t20. We then look at the contents of the hash table (via show t20).
+Each displayed line give a list, which has the bucket number (first
+bucket is zero), the number of items in the bucket, and then the
+contents of the bucket. 
+<pre>
+> (load "pub/hash-open")
+;loading "pub/hash-open"
+;done loading "pub/hash-open.scm"
+;Evaluation took 83 mSec (0 in gc) 978 cons work
+#<unspecified>
+> (define t20 (make-open-hash-table 20 hash-1 string=?))
+;Evaluation took 0 mSec (0 in gc) 44 cons work
+#<unspecified>
+> (file->table "pub/hash.data" t20)
+;Evaluation took 200 mSec (0 in gc) 17475 cons work
+#<unspecified>
+> (show t20)
+(0 2 (occur is))
+(1 3 (it hogg the))
+(2 2 (few predicts))
+(3 3 (critical size generated))
+(4 1 (with))
+(5 2 (tightness binary))
+(6 2 (results williams))
+(7 6 (hardest theory to and for an))
+(8 3 (constraints problems satisfaction))
+(9 5 (except smith phase number study))
+(10 2 (randomly empirical))
+(11 4 (involve dramatically which connectivity))
+(12 4 (are agreement developed domain))
+(13 6 (insoluble at variables that constraint of))
+(14 4 (when close change reveals))
+(15 5 (in should independently difficulty occurs))
+(16 3 (from level there))
+(17 5 (small increases being given a))
+(18 1 (soluble))
+(19 4 (shown where by transition))
+;Evaluation took 16 mSec (0 in gc) 426 cons work
+#<unspecified>
+> 
+</pre>
+<hr>
+<h2>Conclusion</h2>
+It might look dark for hashing, and for closed hashing in particular.
+Don't interpret it this way please. There are good hashing
+strategies, and we need to explore/investigate/experiment before we
+come up with a good one for a given application. If we get a good
+one, then we can reduce sorting and searching (in that application)
+to an order O(n) for sorting, and O(1) for searching. That is
+optimal! Even if we haven't got a good hashing function, we can mix
+and match technologies to get really good performance. For example,
+if we are dealing with alpha-numeric keys, we might use an open
+hashing strategy, with a hash value that is the integer conversion of
+the first character in the key. This then gives us 26 classes, and we
+can arrange each class as a sorted list or vector. We can then search
+within lists using a binary chop. This could be very quick indeed.
+<p>
+You should also realise, that the hash table might be a static thing.
+It might be built up once, and used over and over again, many
+millions of queries, over a period of weeks, months, years, whatever.
+Consequently, it might result in a huge saving if we get it to high 
+efficiency.
+
+<h2>Some Things to Consider</h2>
+I don't know the answer to these questions, but I think they are
+interesting. Have you used the online facilities in the library? How
+are they implemented. Have you ever used BT's directory enquiries?
+How does that work, because there are more than 60 million people in
+the UK. There are many (and increasing numbers of) very large data
+bases out there, and we want fast access, and access on multiple
+attributes. Getting information out quickly is of great importance.

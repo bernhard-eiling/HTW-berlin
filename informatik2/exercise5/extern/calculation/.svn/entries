@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="127"
+   name=""
+   committed-date="2007-01-03T22:14:21.920644Z"
+   url="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks/info2_x4/calculation"
+   last-author="nrichter"
+   kind="dir"
+   uuid="71c151e3-3278-4b76-a452-198f83ebc921"
+   repos="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks"
+   revision="127"/>
+<entry
+   committed-rev="91"
+   name="Main.java"
+   text-time="2007-01-02T19:16:11.110993Z"
+   committed-date="2006-12-14T09:27:54.856603Z"
+   checksum="b890f4378545961054e072d3eacb0afc"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-12-17T18:37:23.745300Z"/>
+<entry
+   committed-rev="127"
+   name="ButtonHandler.java"
+   text-time="2007-01-03T22:18:08.923571Z"
+   committed-date="2007-01-03T22:14:21.920644Z"
+   checksum="c4272a4a47dcc978b4a9103552d00537"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2007-01-03T22:18:08.793384Z"/>
+<entry
+   committed-rev="123"
+   name="Calculator.java"
+   text-time="2007-01-03T21:40:20.942374Z"
+   committed-date="2007-01-03T21:36:31.211068Z"
+   checksum="34084ae99211e1b2cce254ab56373bb3"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2007-01-03T21:40:20.591870Z"/>
+<entry
+   committed-rev="123"
+   name="CalculatorGUI.java"
+   text-time="2007-01-03T21:40:21.042518Z"
+   committed-date="2007-01-03T21:36:31.211068Z"
+   checksum="e7d65856272faad85b0997084796f2e2"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2007-01-03T21:40:20.712043Z"/>
+</wc-entries>

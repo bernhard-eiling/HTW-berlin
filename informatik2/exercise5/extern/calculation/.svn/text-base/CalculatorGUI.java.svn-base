@@ -1,0 +1,275 @@
+/*
+ * Calculator GUI
+ *
+ * Developed for "Rethinking CS101", a project of Lynn Andrea Stein's AP Group.
+ * For more information, see <a href="http://www.ai.mit.edu/projects/cs101">the
+ * CS101 homepage</a> or email <las@ai.mit.edu>.
+ *
+ * Copyright (C) 1996 Massachusetts Institute of Technology.
+ * Please do not redistribute without obtaining permission.
+ */
+package calculation;
+
+import java.awt.*;
+import java.awt.event.*;
+import cs101.util.semaphore.IntBuffer;
+
+/**
+ * This is an implementation of the GUI for a basic four-function
+ * calculator.  It relies on a ButtonHandler (Runnable) to repeatedly
+ * call getButton() and consume the buttonIDs that the Calculator
+ * object produces.
+ *
+ * <P>This follows the interactive-control-loop design described in the
+ * early parts of 6.096 and as a part of the 
+ *      <a href="http://www.ai.mit.edu/projects/cs101/">
+ *                    Rethinking CS101
+ * </a> project of Lynn Andrea Stein's AP Group at the MIT
+ * Artificial Intelligence Laboratory.
+ *
+ * <P>Copyright (c) 1998 Massachusetts Institute of Technology
+ *
+ * @author:  Todd C. Parnell, tparnell@ai.mit.edu
+ * @author:  Emil Sit, sit@mit.edu
+ * @author:  Lynn Andrea Stein, las@ai.mit.edu
+ * @version: $Id: CalculatorGUI.java,v 1.6 1998/07/24 16:37:14 tparnell Exp $
+ *
+ * @see Calculator.ButtonHandler
+ * @see cs101.util.semaphore.IntBuffer
+ *
+ */
+
+public class CalculatorGUI extends Frame implements Calculator {
+
+  /**
+   * The "screen" of the calculator.  Private -- do not use.
+   */
+  private TextField display;            
+    
+  /**
+   * Synchronized storage for put/getButton.  Private -- do not use.
+   * Note:  currently package visible becuase buttonBuf is used by an
+   * inner class.  This is a workaround for a bug in the JDK. (6 July 98)
+   */
+  /* private */ IntBuffer buttonBuf = new IntBuffer();  
+
+  /**
+   * The Button components themselves.  Private -- do not use.
+   */
+  private Button[] Buttons = new Button[Calculator.LAST];
+
+  // Set up the labels w/ static initializer (only need to do this once).
+  static {
+    for ( int i = 0; i < 10; i++ ) {
+      ButtonLabels[i] = String.valueOf( i );
+    }
+    ButtonLabels[Calculator.OP_DIV] 	= "/";
+    ButtonLabels[Calculator.OP_MUL] 	= "*";
+    ButtonLabels[Calculator.OP_ADD] 	= "+";
+    ButtonLabels[Calculator.OP_SUB] 	= "-";
+    ButtonLabels[Calculator.EQUALS] 	= "=";
+    ButtonLabels[Calculator.CLEAR]  	= "clear";
+    ButtonLabels[Calculator.OPEN]   	= "(";
+    ButtonLabels[Calculator.CLOSE]  	= ")";
+    ButtonLabels[Calculator.ERASE]      = "del";
+    ButtonLabels[Calculator.CALC_FRACTION]= "a/b";
+    ButtonLabels[Calculator.IN2POSTFIX] = "in2pos";
+    ButtonLabels[Calculator.COLON] 		= ":";
+    ButtonLabels[Calculator.POWER] 		= "^";
+  }
+
+  /**
+   * Initialize components and such at runtime.  Automagically called
+   * by the java runtime.  You should not use it. 
+   */
+  public CalculatorGUI() {
+    super("CS101 Calculator");
+
+    this.setLayout( new GridLayout( 0, 1 ) );
+
+    this.display = new TextField("");
+    this.display.setEditable( false );
+    this.display.setBackground( Color.white );
+    this.display.setForeground( Color.blue );
+    this.display.setFont( new Font("Monospaced", Font.BOLD, 24) );
+    this.display.setCursor( new Cursor(Cursor.HAND_CURSOR) );
+
+    this.add( this.display );
+
+    for ( int i = 0; i < Calculator.LAST; i++ ) {
+      this.Buttons[i] = new Button( Calculator.ButtonLabels[i] );
+      // Add the ActionListener for this button
+      this.Buttons[i].addActionListener(new ActionListener() {
+  	public void actionPerformed(ActionEvent e) {
+	  // Find out what button was pressed.  We cannot (unfortunately)
+	  // simply use "i" here, so we do it the hard way.
+ 	  String label = ((Button)e.getSource()).getLabel();
+ 	  for ( int k = 0; k < Calculator.LAST; k++ ) {
+ 	    if (Calculator.ButtonLabels[k].equals(label)) {
+ 	      CalculatorGUI.this.buttonBuf.putButton( k );
+ 	      break;      // only one match is possible
+ 	    }
+ 	  }
+  	}
+      });
+    }
+    // Layout the keypad one row at a time.
+    Panel numberPad = new Panel();
+    numberPad.setBackground( Color.lightGray );
+    numberPad.setForeground( Color.black );
+    numberPad.setFont( new Font("Monospaced", Font.BOLD, 20) );
+    numberPad.setCursor( new Cursor(Cursor.HAND_CURSOR) );
+
+    numberPad.setLayout( new GridLayout( 0, 4, 2, 2) );
+    
+    numberPad.add( this.Buttons[7] );  // Row 1
+    numberPad.add( this.Buttons[8] );
+    numberPad.add( this.Buttons[9] );
+    numberPad.add( this.Buttons[Calculator.OP_DIV] );
+    
+    numberPad.add( this.Buttons[4] );  // Row 2
+    numberPad.add( this.Buttons[5] );
+    numberPad.add( this.Buttons[6] );
+    numberPad.add( this.Buttons[Calculator.OP_MUL] );
+    
+    numberPad.add( this.Buttons[1] );  // Row 3
+    numberPad.add( this.Buttons[2] );
+    numberPad.add( this.Buttons[3] );
+    numberPad.add( this.Buttons[Calculator.OP_ADD] );
+    
+    numberPad.add( this.Buttons[Calculator.OPEN] );  // Row 4 
+    numberPad.add( this.Buttons[0] );
+    numberPad.add( this.Buttons[Calculator.CLOSE] ); 
+    numberPad.add( this.Buttons[Calculator.OP_SUB] );
+    
+    numberPad.add( this.Buttons[Calculator.IN2POSTFIX] );  // Row 5
+    numberPad.add( this.Buttons[Calculator.ERASE] );
+    numberPad.add( this.Buttons[Calculator.POWER] );
+    numberPad.add( this.Buttons[Calculator.COLON] );
+
+    numberPad.add( this.Buttons[Calculator.CLEAR] );  // Row 6
+    numberPad.add( new Button("") );
+    numberPad.add( this.Buttons[Calculator.CALC_FRACTION] );
+    numberPad.add( this.Buttons[Calculator.EQUALS] );
+    
+    this.add( numberPad );
+
+    this.pack();      // Set the window size,
+    this.show();      // pop it up,
+    this.validate();  //
+    this.setResizable(false);  //
+
+
+    this.addWindowListener( new WindowAdapter() {
+      public void windowClosing( WindowEvent e) {
+	System.out.println("Exiting...");
+	CalculatorGUI.this.dispose();
+	System.exit(0);
+      }
+    });
+
+  }
+
+  /**
+   * Get the next Button pressed.  The return value will be an int
+   * between 0 and 9 (if the button was a number) or one of the
+   * Calculator constants.
+   *
+   * @return the next button to be handled.
+   */
+  public int getButton() {
+    return this.buttonBuf.getButton();
+  }
+
+  /**
+   * Get the label for the given Button ID.  The argument 
+   * should be an int between 0 and 9 (if the button was 
+   * a number) or one of the Calculator constants, 
+   * otherwise the empty string ("") will be returned.
+   *
+   * @return the button label as a String.
+   */
+  public String getButtonLabel(int buttonID) {
+    if ((buttonID < 0) || (buttonID > Calculator.LAST)) {
+      return "";
+    } else { 
+      return ButtonLabels[buttonID];
+    }
+  }
+
+  /**
+   * Get the text currently displayed on the Calculator.
+   *
+   * @return the text as a String.
+   */
+  public String getText() {
+    return this.display.getText();
+  }
+
+
+  /**
+   * Set the text currently displayed on the Calculator.
+   *
+   * @param newText the text to be displayed.
+   */
+  public void setText( String newText ) {
+    this.display.setText( newText );
+  }
+}
+
+/* Comments:
+ *
+ * History:
+ *     $Log: CalculatorGUI.java,v $
+ *     Revision 1.6  1998/07/24 16:37:14  tparnell
+ *     Placate new javadoc behavior
+ *
+ *     Revision 1.5  1998/07/21 14:58:44  tparnell
+ *     javadoc fix
+ *
+ *     Revision 1.4  1998/07/07 14:22:00  tparnell
+ *     changed refrences to Frame.HAND_CURSOR to Cursor.HAND_CURSOR
+ *
+ *     Revision 1.3  1998/07/06 20:08:32  tparnell
+ *     removed some JDK1.0 code still present in file.  minor redesign of event
+ *     handling.  CalculatorGUI used to implement ActionListener and handled
+ *     events from the various buttons.  Now that work is done by an anonymous
+ *     inner class.
+ *
+ *     Revision 1.2  1998/06/05 05:19:29  craigh
+ *     added getButtonLabel() to Calculator interface.  Implemented the
+ *     method in CalculatorGUI, and made use of it in ButtonHandler.
+ *
+ *     Revision 1.1  1998/02/26 17:25:45  tparnell
+ *     Reconstruction from hard drive failure.  Everything appears intact.
+ *
+ *     Revision 1.3  1997/10/05 21:11:20  shong
+ *     Updated for fall97, to Java 1.1
+ *     changed GUI, using 1.1 Event Model
+ *
+ *     Revision 1.2  1997/07/16 14:15:21  tparnell
+ *     *** empty log message ***
+ *
+ *     Revision 1.2  1996/10/04 19:02:26  las
+ *     Fixed the location of the clear button so that it's not quite so
+ *     grotesque.  (I suppose that the right answer is a GridBagLayout....)
+ *
+ *     Revision 1.1  1996/10/04 16:20:21  las
+ *     Transformed Calculator into an application and made it a package.  See
+ *     STAFF_SETUP for which files are public.  To run, use Calculator.Main.
+ *
+ *     Specifics:
+ *         Added Main.java, which starts the calculator program (both
+ *     CalculatorGUI and ButtonHandler);
+ *         Made Calculator an interface;
+ *         Moved GUI implementation (previously in Calculator) to
+ *     CalculatorGUI.
+ *         Added clear button, which looks pretty gross right now.  (It can
+ *     be deleted in a single line, though.)
+ *
+ *     Revision 1.1.1.1  1996/07/18 17:26:12  sit
+ *     Import from summer 6.80s web tree
+ *
+ *
+ */
+

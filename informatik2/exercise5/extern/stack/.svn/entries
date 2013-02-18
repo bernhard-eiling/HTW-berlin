@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="97"
+   name=""
+   committed-date="2006-12-19T06:22:50.926898Z"
+   url="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks/info2_x4/stack"
+   last-author="nrichter"
+   kind="dir"
+   uuid="71c151e3-3278-4b76-a452-198f83ebc921"
+   repos="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks"
+   revision="127"/>
+<entry
+   committed-rev="97"
+   name="StackListItem.java"
+   text-time="2006-12-30T00:48:47.578659Z"
+   committed-date="2006-12-19T06:22:50.926898Z"
+   checksum="06be4b2fbc78233d75f54ec2f8a6a358"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-12-30T00:48:47.117996Z"/>
+<entry
+   committed-rev="97"
+   name="StackList.java"
+   text-time="2006-12-30T00:48:47.618716Z"
+   committed-date="2006-12-19T06:22:50.926898Z"
+   checksum="4a49d03220ddfb19b0fd77c939dd75e4"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-12-30T00:48:47.168068Z"/>
+<entry
+   committed-rev="97"
+   name="StackArray.java"
+   text-time="2006-12-30T00:48:47.668788Z"
+   committed-date="2006-12-19T06:22:50.926898Z"
+   checksum="dcddf9c4690ecacb605d3ab531f12a23"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-12-30T00:48:47.228155Z"/>
+<entry
+   committed-rev="97"
+   name="Stack.java"
+   text-time="2006-12-30T00:48:47.708846Z"
+   committed-date="2006-12-19T06:22:50.926898Z"
+   checksum="0dab3b70cba054d2d4f258360f44c7cc"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-12-30T00:48:47.318284Z"/>
+<entry
+   committed-rev="97"
+   name="StackTest.java"
+   text-time="2006-12-30T00:48:47.748904Z"
+   committed-date="2006-12-19T06:22:50.926898Z"
+   checksum="8126e9b45bc1334184e4c42d363fadfd"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-12-30T00:48:47.388385Z"/>
+<entry
+   committed-rev="97"
+   name="StackOverflow.java"
+   text-time="2006-12-30T00:48:47.788961Z"
+   committed-date="2006-12-19T06:22:50.926898Z"
+   checksum="8bba1638253763988bccadbb1f94c625"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-12-30T00:48:47.438457Z"/>
+<entry
+   committed-rev="97"
+   name="StackUnderflow.java"
+   text-time="2006-12-30T00:48:47.829019Z"
+   committed-date="2006-12-19T06:22:50.926898Z"
+   checksum="ae12cb86144c48f200b86477c56804ce"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-12-30T00:48:47.488529Z"/>
+</wc-entries>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="44"
+   name=""
+   committed-date="2006-11-30T00:14:23.817988Z"
+   url="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks/info2_x2/RationalNumbers"
+   last-author="nrichter"
+   kind="dir"
+   uuid="71c151e3-3278-4b76-a452-198f83ebc921"
+   repos="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks"
+   revision="46"/>
+<entry
+   committed-rev="47"
+   name="RatioMain.java"
+   text-time="2006-11-30T00:37:30.466323Z"
+   committed-date="2006-11-30T00:38:28.548107Z"
+   checksum="7886cc46773a17e907df446c9bae6db4"
+   last-author="tpreuss"
+   kind="file"
+   prop-time="2006-11-30T00:15:37.548440Z"
+   revision="47"/>
+<entry
+   committed-rev="49"
+   name="RatioOperator.java"
+   text-time="2006-11-30T00:50:32.100257Z"
+   committed-date="2006-11-30T00:59:32.408048Z"
+   checksum="ec2596330b2f3f84aa30ad4920d6b18d"
+   last-author="tpreuss"
+   kind="file"
+   prop-time="2006-11-29T23:00:06.533160Z"
+   revision="49"/>
+<entry
+   committed-rev="47"
+   name="RatioWriter.java"
+   text-time="2006-11-30T00:37:51.506577Z"
+   committed-date="2006-11-30T00:38:28.548107Z"
+   checksum="9699b8492860eb24c977fba3c176c9ca"
+   last-author="tpreuss"
+   kind="file"
+   prop-time="2006-11-30T00:15:37.648584Z"
+   revision="47"/>
+<entry
+   committed-rev="34"
+   name="Ratio.java"
+   text-time="2006-11-29T22:27:55.947113Z"
+   committed-date="2006-11-29T21:49:41.087959Z"
+   checksum="448881d0be28072e53d982b2e1234e56"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-11-29T22:27:55.536523Z"/>
+<entry
+   committed-rev="38"
+   name="RatioInput.java"
+   text-time="2006-11-29T22:50:15.643502Z"
+   committed-date="2006-11-29T22:49:27.948407Z"
+   checksum="1687ef600cf062e439f96a58160dbf82"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-11-29T22:50:15.433200Z"/>
+</wc-entries>

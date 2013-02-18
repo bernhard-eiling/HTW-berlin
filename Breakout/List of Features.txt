@@ -1,0 +1,12 @@
+Variabler Abprallwinkel des Balls am paddel.
+
+Soundeffekte mit externer soundlibrary MINIM realisiert.
+
+Steine haben unterschiedliche Farben und sind verschiedene Punkte wert.
+
+(Nearly) No magic numbers. Z.B. errechnet das Programm aus der Größe der bricks und ihren Abstand automatisch die Position des gesamten Feldes von bricks.
+
+PowerUps durch Vererbung realisiert.
+	- Grün: Multiball
+	- Gelb: breiteres paddle
+	- Blau: langsamer Ball

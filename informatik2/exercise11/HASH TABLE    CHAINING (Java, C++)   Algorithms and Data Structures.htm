@@ -1,0 +1,536 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/ xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>HASH TABLE :: CHAINING (Java, C++) |  Algorithms and Data Structures</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en-us" />
+<meta name="keywords" content="" />
+<meta name="description" content="Collision resolution by chaining. Illustration, complexity analysis and code snippets in Java and C++." />
+<link rel="stylesheet" href="/style2.css" type="text/css" />
+   
+
+<script type="text/javascript" src="/prototype.js"></script>
+  <script>
+
+      function sendRequest() {
+        new Ajax.Request("/sendmailx.php", 
+          { 
+          method: 'post', 
+          postBody: 'message='+ $F('message')+'&visitor='+ $F('visitor')+'&visitormail='+ $F('visitormail')+'&ip=188.103.221.16&httpref=/Data_structures/Hash_table/Chaining&httpagent=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.56 Safari/536.5',
+          onComplete: showResponse 
+          });
+        }
+		
+		function sendDonate() {
+        new Ajax.Request("/donatex.php", 
+          { 
+          method: 'post', 
+          postBody: 'message=donation_click'+'&ip=188.103.221.16&httpref=/Data_structures/Hash_table/Chaining&httpagent=Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.56 Safari/536.5',
+          onComplete: showDonate
+          });
+        }
+
+      function showResponse(req){
+        $('showx').innerHTML= req.responseText;
+        $('message').value = '';
+        $('visitor').value = '';
+        $('visitormail').value = '';
+      }	 
+	  
+	  function showDonate(req){
+	  }
+	  
+   </script>
+
+    <style type="text/css">
+<!--
+
+.table1 {
+  
+  margin: 0px 0 1em 0;
+  caption-side: top;
+  background-color:#F5F5F5;
+}
+
+.td1 {
+  border: 1px solid #cccccc;
+}
+
+.td2 {
+  border: 1px none #cccccc;
+}
+
+.style_sup_new {
+  color: #993300;
+  font-weight: bold;
+}
+
+-->
+    </style>
+</head>
+<body>
+
+<div class="width">
+<div class="padding">
+<div class="banner">
+  <table border="0" height="100%" cellspacing="0" cellpadding="0">
+    <tr>
+      <td height="50" valign="bottom" align="left" nowrap="nowrap"><a href="/" class="title1" style="color: #006CAB">Algorithms and Data Structures</a></td>
+    </tr>
+    <tr>
+      <td height="51" valign="top" align="left"><span class="title2" style="color: #E1771E">with implementations in Java and C++</span></td>
+    </tr>
+  </table>
+</div>
+</div>
+</div>
+
+<table style="background-color:#F5F5F5; margin-left:auto; margin-right:auto;"><tr><td>
+
+<div class="width"><div class="padding">
+
+  <div class="leftstrip">
+      <div class="leftmenu">
+          <a class="oolink" href="/Data_structures/">Data structures</a><br />
+          <a class="oolink" href="/Algorithms/">Algorithms</a><br />
+          <a class="oolink" href="/Cpp/">C++</a><br />
+          <a class="oolink" href="/Books/">Books</a><br />
+          <a class="oolink" href="http://forum.algolist.net/">Forum</a><br />            
+          <a class="oolink" href="/Feedback">Feedback</a><br />  
+      <div style="border-top:#CCCCCC 1px dashed; margin-top:15px; padding-top:5px; margin-right:25px;">             
+          <a class="oolink" href="http://www.cpp-tips.net/">C++ code snippets</a>         
+          <a class="oolink" href="http://www.economicstextbook.net/">Economics Textbook</a>        
+        </div>
+    </div>  
+    
+         
+        <div class="leftpp">
+       <div style="padding-top:15px;"><span style="text-align:center; font-size:12pt; font-family:Verdana; color: #006CAB; font-weight:bold; line-height:140%">
+   
+	<span style="font-size:14pt; color: #c95069">Support us</span><br /><br /><br />
+   
+    <span>to write<br />more tutorials</span><br /><br /><br /><br />
+   
+	<span>to create new<br />visualizers</span><br /><br /><br /> <br />
+    
+    to keep sharing<br />free knowledge <br />for you<br />
+    
+    <div style="padding-top:60px;">
+    
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="WJ7YPA5XHR5N8">
+<input type="image" onClick="sendDonate()" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1">
+<img alt="" border="0" style="margin-top:5px;" src="/img/pp.png" />
+</form>
+
+	<br /><br /><span style="font-size:10pt; color: #3F7F5F;">every dollar helps</span>	
+
+	</div>
+   
+   </span></div>                            
+        </div> 
+        
+        <div class="lefttop3"><strong>TOP3&nbsp;Articles</strong><br /><a class="oolink" href="/Algorithms/Sorting/Quicksort">Quicksort</a><br /><a class="oolink" href="/Algorithms/Graph/Undirected/Depth-first_search">Depth-first search</a><br /><a class="oolink" href="/Data_structures/Binary_search_tree">Binary search tree</a><br /></div>               
+    </div>
+
+  <div id="searchdiv">
+  <form action="http://www.algolist.net/search.php" id="cse-search-box">
+    <input type="hidden" name="cx" value="partner-pub-3923249955015497:4t0ah4wja3n" />
+    <input type="hidden" name="cof" value="FORID:10" />
+    <input type="hidden" name="ie" value="ISO-8859-1" />
+    <input type="text" name="q" id="query_inp" size="114"/>
+    <input type="submit" id="search_btn" name="sa" value="Search"/>
+  </form>
+  </div>
+
+<script type="text/javascript"></script>
+  <script>  
+  
+(function() { 
+if (navigator.appName == "Netscape") {
+  var ua = navigator.userAgent;
+    var re = new RegExp("Chrome");
+    if (re.exec(ua) == null) {
+    document.getElementById('searchdiv').style.cssText = 'margin-bottom:2px;';
+    document.getElementById('query_inp').size = 115;
+  }
+  else {
+    document.getElementById('searchdiv').style.cssText = 'margin-bottom:-14px;';
+    document.getElementById('query_inp').size = 114;
+  }
+  }
+else if (navigator.appName == "Microsoft Internet Explorer") {
+    var ua = navigator.userAgent;
+    var re = new RegExp("MSIE ([0-9]{1,}[\.0-9]{0,})");
+    if (re.exec(ua) != null)
+      rv = parseFloat(RegExp.$1)
+  if (rv != 8)
+    document.getElementById('searchdiv').style.cssText = 'margin-bottom:-18px;';  
+  if (rv == 8) {    
+    document.getElementById('searchdiv').style.cssText = 'margin-bottom:2px;';    
+    document.getElementById('query_inp').size = 114;
+  }
+}
+else if (navigator.appName == "Opera") {
+  document.getElementById('searchdiv').style.cssText = 'margin-bottom:-14px;';  
+  document.getElementById('query_inp').size = 117;
+}
+  
+var f = document.getElementById('cse-search-box'); if (!f) { f = document.getElementById('searchbox_demo'); } if (f && f.q) { var q = f.q; var n = navigator; var l = location; if (n.platform == 'Win32') { q.style.cssText = 'border: 1px solid #ddd; padding: 3px; padding-right:1px;'; } var b = function() { if (q.value == '') { q.style.background = '#FFFFFF url(http:\x2F\x2Fwww.google.com\x2Fcoop\x2Fintl\x2Fen\x2Fimages\x2Fgoogle_custom_search_watermark.gif) left no-repeat'; } }; var f = function() { q.style.background = '#ffffff'; }; q.onfocus = f; q.onblur = b; if (!/[&?]q=[^&]/.test(l.search)) { b(); } } })();   
+   </script>
+
+  <div class="content">
+      <div class="inside">
+      
+          <div class="ga">
+              Need help with a programming assignment? Get affordable <a href="http://helpwithahomework.com/">programming homework help</a>.
+            </div>
+        <style type="text/css">
+<!--
+h1 {
+	font-size:18pt;
+}
+h2 {
+	font-size:14pt;
+}
+h3 {
+	font-size:12pt;
+}
+-->
+</style>
+<style type="text/css">
+<!--
+p.MsoNormal {
+margin:0cm;
+margin-bottom:.0001pt;
+font-size:12.0pt;
+font-family:"Times New Roman";
+}
+.style1 {color: blue}
+.style2 {color: #000000}
+-->
+</style>
+<h1>Hash table. Collision resolution by chaining (closed addressing)</h1>
+<p>Chaining is a possible way to resolve collisions. Each slot of the array contains a link to a <a href="/Data_structures/Singly-linked_list">singly-linked list</a>  containing key-value pairs with the same hash. New key-value pairs are added to the end of the list. Lookup algorithm searches through the list to find matching key. Initially table slots contain nulls. List is being created, when value with the certain hash is added for the first time.</p>
+<h2>Chaining illustration</h2>
+<p><img src="/img/hash-table-chaining.png" alt="Hash table: chaining illustration" /></p>
+<h2>Complexity analysis</h2>
+<p>Assuming, that hash function distributes hash codes uniformly and table allows dynamic resizing, amortized complexity of insertion, removal and lookup operations is constant. Actual time, taken by those operations linearly depends on table's load factor.</p>
+<p><em>Note.</em> Even substantially overloaded hash table, based on chaining, shows well performance. Assume hash table with 1000 slots storing 100000 items (load factor is 100). It requires a bit more memory (size of the table), than a <a href="/Data_structures/Singly-linked_list">singly-linked list</a>, but all basic operations will be done about 1000 times faster on average. Draw attention, that computational complexity of both singly-linked list and constant-sized hash table is O(n).</p>
+<h2>Chaining vs. open addressing</h2>
+<p>See <a href="Open_addressing#open_addressing_vs_chaining">open addressing vs. chaining</a>.</p>
+<h2>Code snippets</h2>
+<p>Code given below implements chaining with list heads. It means, that hash table entries contain first element of a linked-list, instead of storing pointer to it.</p>
+<h3>Java implementation</h3>
+
+<div class="codeblock"><p class="MsoNormal" style="text-autospace:none;"><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">public</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">class</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> LinkedHashEntry  {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">private</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">key</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">private</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">value</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">private</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> LinkedHashEntry </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">next</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry(</span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> key, </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> value) {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">this</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">.</span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">key</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> = key;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">this</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">.</span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">value</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> = value;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">this</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">.</span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">next</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> = </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">public</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> getValue() {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">return</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">value</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">public</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">void</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> setValue(</span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> value) {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">this</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">.</span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">value</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> = value;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">public</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> getKey() {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">return</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">key</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">public</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> LinkedHashEntry  getNext() {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">return</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">next</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">public</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">void</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> setNext(LinkedHashEntry next) {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">this</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">.</span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">next</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> = next;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">}</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p></div>
+<p class="MsoNormal">&nbsp;</p>
+<div class="codeblock"><p class="MsoNormal" style="text-autospace:none;"><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">public</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">class</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> HashMap  {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">private</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">final</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">static</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><em><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">TABLE_SIZE</span></em><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> = 128;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry[] </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HashMap() {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> = </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">new</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> LinkedHashEntry[</span><em><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">TABLE_SIZE</span></em><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">];</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">for</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (</span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> i = 0; i &lt; </span><em><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">TABLE_SIZE</span></em><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">; i++)</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">[i] = </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">public</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> get(</span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> key) {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> hash = (key % </span><em><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">TABLE_SIZE</span></em><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">);</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">if</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (</span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">[hash] == </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">)</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">return</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> -1;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">else</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  entry = </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">[hash];</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">while</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (entry  != </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> &amp;&amp; entry.getKey() != key)</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry  = entry.getNext();</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">if</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (entry == </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">)</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">return</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> -1;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">else</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">return</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> entry.getValue();</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">public</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">void</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> put(</span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> key, </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> value) {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> hash = (key % </span><em><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">TABLE_SIZE</span></em><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">);</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">if</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (</span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">[hash] == </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">)</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">[hash] = </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">new</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> LinkedHashEntry(key, value);</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">else</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  entry = </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">[hash];</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">while</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (entry.getNext() != </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> &amp;&amp; entry.getKey() != key)</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">entry =  entry.getNext();</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">if</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (entry.getKey() == key)</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry.setValue(value);</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">else</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry.setNext(</span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">new</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> LinkedHashEntry(key, value));</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">public</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">void</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> remove(</span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> key) {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">int</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> hash = (key % </span><em><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">TABLE_SIZE</span></em><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">);</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">if</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (</span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">[hash] != </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">) {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  prevEntry = </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  entry = </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">[hash];</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">while</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (entry.getNext() != </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> &amp;&amp; entry.getKey() != key) {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prevEntry  = entry;</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry  = entry.getNext();</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">if</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (entry.getKey()  == key) {</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">if</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (prevEntry == </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">null</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">)</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; color:#0000C0; ">table</span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">[hash] =  entry.getNext();</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; ">else</span></strong><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prevEntry.setNext(entry.getNext());</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">}</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">}</span></p></div>
+<h3>&nbsp;</h3>
+<h3>C++ implementation</h3>
+<div class="codeblock"><p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:blue; ">class</span><span style="font-family:'Courier New'; font-size:10.0pt; "> LinkedHashEntry {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:blue; ">private</span><span style="font-family:'Courier New'; font-size:10.0pt; ">:</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">int</span> key;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">int</span> value;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  *next;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:blue; ">public</span><span style="font-family:'Courier New'; font-size:10.0pt; ">:</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry(<span style="color:blue; ">int</span> key, <span style="color:blue; ">int</span> value) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">this</span>-&gt;key = key;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">this</span>-&gt;value = value;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">this</span>-&gt;next = NULL;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">int</span> getKey() {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">return</span> key;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">int</span> getValue() {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">return</span> value;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;">&nbsp;</p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; "><span style="color:blue; ">	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; void</span> setValue(<span class="style1">int</span> value) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue;">this<span class="style2">-&gt;value = value;</span></span></span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  *getNext() {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">return</span> next;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">void</span> setNext(LinkedHashEntry *next) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; color:blue; ">this</span><span style="font-family:'Courier New'; font-size:10.0pt; ">-&gt;next =  next;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal"><span style="font-family:'Courier New'; font-size:10.0pt; ">};</span></p></div>
+<p class="MsoNormal">&nbsp;</p>
+<div class="codeblock"><p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:blue; ">const</span><span style="font-family:'Courier New'; font-size:10.0pt; "> <span style="color:blue; ">int</span> TABLE_SIZE = 128;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:blue; ">class</span><span style="font-family:'Courier New'; font-size:10.0pt; "> HashMap {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:blue; ">private</span><span style="font-family:'Courier New'; font-size:10.0pt; ">:</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  **table;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:blue; ">public</span><span style="font-family:'Courier New'; font-size:10.0pt; ">:</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HashMap() {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; table  = <span style="color:blue; ">new</span> LinkedHashEntry*[TABLE_SIZE];</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">for</span> (<span style="color:blue; ">int</span> i = 0; i  &lt; TABLE_SIZE; i++)</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; table[i]  = NULL;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">int</span> get(<span style="color:blue; ">int</span> key) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">int</span> hash = (key % TABLE_SIZE);</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">if</span> (table[hash] == NULL)</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">return</span> -1;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">else</span> {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  *entry = table[hash];</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">while</span> (entry != NULL &amp;&amp; entry-&gt;getKey() !=  key)</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry  = entry-&gt;getNext();</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">if</span> (entry == NULL)</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">return</span> -1;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">else</span></span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">return</span> entry-&gt;getValue();</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">void</span> put(<span style="color:blue; ">int</span> key, <span style="color:blue; ">int</span> value) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">int</span> hash = (key % TABLE_SIZE);</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">if</span> (table[hash] == NULL)</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; table[hash]  = <span style="color:blue; ">new</span> LinkedHashEntry(key, value);</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">else</span> {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  *entry = table[hash];</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">while</span> (entry-&gt;getNext() != NULL)</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry  = entry-&gt;getNext();</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; "><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span></span></strong><span style="font-family:'Courier New'; font-size:10.0pt; color:#7F0055; "><span class="style1">if</span></span><span style="font-family:'Courier New'; font-size:10.0pt; color:black; "> (entry<span style="font-family:'Courier New'; font-size:10.0pt; ">-&gt;</span>getKey()  == key)</span> </p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry<span style="font-family:'Courier New'; font-size:10.0pt; ">-&gt;</span>setValue(value);</span><span style="font-family:'Courier New'; font-size:10.0pt; "> </span></p>
+<span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; color:blue;">else</span>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; "><span style="font-family:'Courier New'; font-size:10.0pt; color:black; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry-&gt;setNext(<span style="color:blue; ">new</span> LinkedHashEntry(key, value));</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; color:blue; ">void</span><span style="font-family:'Courier New'; font-size:10.0pt; "> remove(<span style="color:blue; ">int</span> key) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">int</span> hash = (key % TABLE_SIZE);</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">if</span> (table[hash] != NULL) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  *prevEntry = NULL;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  *entry = table[hash];</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">while</span> (entry-&gt;getNext() != NULL &amp;&amp;  entry-&gt;getKey() != key) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prevEntry  = entry;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry  = entry-&gt;getNext();</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">if</span> (entry-&gt;getKey() == key) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">if</span> (prevEntry == NULL) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  *nextEntry = entry-&gt;getNext();</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">delete</span> entry;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; table[hash]  = nextEntry;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <span style="color:blue; ">else</span> {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  *next = entry-&gt;getNext();</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">delete</span> entry;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prevEntry-&gt;setNext(next);</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; ">}</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ~HashMap() {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">for</span> (<span style="color:blue; ">int</span> i = 0; i  &lt; TABLE_SIZE; i++)</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">if</span> (table[i] != NULL) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  *prevEntry = NULL;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; LinkedHashEntry  *entry = table[i];</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">while</span> (entry != NULL) {</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; prevEntry  = entry;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; entry  = entry-&gt;getNext();</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="font-family:'Courier New'; font-size:10.0pt; color:blue; ">delete</span><span style="font-family:'Courier New'; font-size:10.0pt; "> prevEntry;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span style="color:blue; ">delete</span>[]  table;</span></p>
+<p class="MsoNormal" style="text-autospace:none;"><span style="font-family:'Courier New'; font-size:10.0pt; ">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</span></p>
+<p class="MsoNormal"><span style="font-family:'Courier New'; font-size:10.0pt; ">};</span></p></div>
+<img src="/top-line.jpg" />
+<div style="font-size:20px; font-family: Tahoma; padding-top:5px; margin-left:10px; margin-right:10px;">
+<table border = 0 width="100%">
+	<tr>
+    <td align="left">	  		
+        Previous: <a class="nav" href="Simple_example">The very simple hash table example</a>	</td>
+	<td align="right">
+		Next: <a class="nav" href="Open_addressing">Open addressing</a>	</td>
+	</tr>
+</table> 
+</div>
+<img src="/top-line.jpg" />
+<br /><iframe src="http://www.facebook.com/plugins/like.php?href=http://www.algolist.net/Data_structures/Hash_table/Chaining&amp;layout=standard&amp;show_faces=true&amp;width=739&amp;action=like&amp;font&amp;colorscheme=light&amp;height=30" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:739px; height:30px;" allowTransparency="true"></iframe>
+     
+     <div style="margin-bottom:15px;">
+     
+     <h2>Contribute to AlgoList</h2>
+     
+     <p>Liked this tutorial? Please, consider making a donation. Contribute to help us keep sharing free knowledge and write new tutorials.</p>
+     
+     <span style="text-align: center; display:inline-block;">
+     
+     <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="WJ7YPA5XHR5N8">
+<input type="image" onClick="sendDonate()" src="https://www.paypal.com/en_US/i/btn/btn_donate_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+<img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1"><br />
+<img alt="" border="0" style="margin-top:5px;" src="/img/pp.png" />
+</form>
+
+	</span>
+
+	<p>Every dollar helps!</p>
+
+</div>
+     
+             <div style="padding-top: 10px;"><center><script  src="http://tag.contextweb.com/TagPublish/getjs.aspx?action=VIEWAD&cwrun=200&cwadformat=728X90&cwpid=510902&cwwidth=728&cwheight=90&cwpnet=1&cwtagid=43244"></script></center></div>                 
+        
+<!--LX!-->  
+        
+           
+  <form onsubmit="return false;" style="text-align:left">
+   
+   <?php
+$ipi = getenv("REMOTE_ADDR");
+$httprefi = getenv ("HTTP_REFERER");
+$httpagenti = getenv ("HTTP_USER_AGENT");
+?>
+   
+   <input type="hidden" name="ip" value="<?php echo $ipi ?>" />
+<input type="hidden" name="httpref" value="<?php echo $httprefi ?>" />
+<input type="hidden" name="httpagent" value="<?php echo $httpagenti ?>" />
+   
+   <table border="0">
+  <tr>
+    <td colspan = 2>
+    <h2 class="real_h3">Leave a reply</h2>
+	<div id="showx">
+</div>
+
+    </td>
+  </tr>
+  <tr>
+    <td valign="top" width="150px">Your name (optional):</td>
+    <td><input type="text" name="visitor" id="visitor" size="35"  /></td>
+  </tr>
+  <tr>
+    <td valign="top" width="150px">Your e-mail (optional):</td>
+    <td><input type="text" name="visitormail" id="visitormail" size="35" /></td>
+  </tr>
+  <tr>
+    <td valign="top" width="150px">Message: </td>
+    <td><textarea type="text" name="message" id="message"  rows="10" cols="60" /></textarea></td>
+  </tr>
+  <tr>
+    <td valign="top" width="150px">&nbsp;</td>
+    <td><input type="submit" value="Send" onClick="sendRequest()" />
+</td>
+  </tr>
+</table>
+  </form>
+      
+        
+           
+            
+    </div></div> </td></tr></table>        
+
+
+            <!--Google analytics-->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-9311725-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>
+            <!--/Google analytics-->
+
+
+  </body>
+</html>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="43"
+   name=""
+   committed-date="2006-11-30T00:12:02.858000Z"
+   url="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks/info2_x2/runningTimes"
+   last-author="tpreuss"
+   kind="dir"
+   repos="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks"
+   revision="46"/>
+<entry
+   committed-rev="43"
+   name="LoopCalculator.java"
+   text-time="2006-11-30T00:12:09.409150Z"
+   committed-date="2006-11-30T00:12:02.858000Z"
+   checksum="418caaf769ea3bb1d560203b0542195d"
+   last-author="tpreuss"
+   kind="file"/>
+</wc-entries>

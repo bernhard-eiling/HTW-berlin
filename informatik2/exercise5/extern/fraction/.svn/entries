@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="119"
+   name=""
+   committed-date="2007-01-03T19:47:37.336291Z"
+   url="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks/info2_x4/fraction"
+   last-author="tpreuss"
+   kind="dir"
+   uuid="71c151e3-3278-4b76-a452-198f83ebc921"
+   repos="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks"
+   revision="127"/>
+<entry
+   committed-rev="107"
+   name="RatioMain.java"
+   text-time="2007-01-01T20:58:40.999824Z"
+   committed-date="2007-01-01T19:37:59.953274Z"
+   checksum="29a949ec9ce347ad38c1ab4af6d31098"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2007-01-01T20:58:40.719420Z"/>
+<entry
+   committed-rev="107"
+   name="RatioOperator.java"
+   text-time="2007-01-01T20:58:41.049896Z"
+   committed-date="2007-01-01T19:37:59.953274Z"
+   checksum="1ad30edaafdb63977df8ad325c18e549"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2007-01-01T20:58:40.779507Z"/>
+<entry
+   committed-rev="107"
+   name="RatioWriter.java"
+   text-time="2007-01-01T20:58:41.089953Z"
+   committed-date="2007-01-01T19:37:59.953274Z"
+   checksum="46d334bc7f9167e81ea75b5e9966ca63"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2007-01-01T20:58:40.829579Z"/>
+<entry
+   committed-rev="107"
+   name="Ratio.java"
+   text-time="2007-01-01T20:58:41.119996Z"
+   committed-date="2007-01-01T19:37:59.953274Z"
+   checksum="b4d42a196467aab2faa76d0c90dc81d9"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2007-01-01T20:58:40.879651Z"/>
+<entry
+   committed-rev="119"
+   name="RatioInput.java"
+   text-time="2007-01-03T19:50:48.551740Z"
+   committed-date="2007-01-03T19:47:37.336291Z"
+   checksum="926cabee9d9ef965c8d54cf96bb4a9fe"
+   last-author="tpreuss"
+   kind="file"
+   prop-time="2007-01-01T20:58:40.949752Z"/>
+</wc-entries>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="40"
+   name=""
+   committed-date="2006-11-29T23:48:10.018023Z"
+   url="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks/info2_x2/PrimeNumbers"
+   last-author="nrichter"
+   kind="dir"
+   uuid="71c151e3-3278-4b76-a452-198f83ebc921"
+   repos="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks"
+   revision="46"/>
+<entry
+   committed-rev="34"
+   name="PrimeChecker.java"
+   text-time="2006-11-29T22:27:56.437819Z"
+   committed-date="2006-11-29T21:49:41.087959Z"
+   checksum="39ea7de786c67fed478f05ad093f25aa"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-11-29T22:27:56.137387Z"/>
+<entry
+   committed-rev="40"
+   name="PrimeGenerator.java"
+   text-time="2006-11-30T00:01:44.079971Z"
+   committed-date="2006-11-29T23:48:10.018023Z"
+   checksum="ccbba4df5368580d479a45b8bcca2ece"
+   last-author="nrichter"
+   kind="file"
+   prop-time="2006-11-30T00:01:43.929755Z"/>
+</wc-entries>

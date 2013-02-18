@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="121"
+   name=""
+   committed-date="2007-01-03T21:12:22.533272Z"
+   url="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks/info2_x4/dwwPostfix"
+   last-author="tpreuss"
+   kind="dir"
+   uuid="71c151e3-3278-4b76-a452-198f83ebc921"
+   repos="svn://projekte.f4.fhtw-berlin.de/s0517512-tasks"
+   revision="127"/>
+<entry
+   committed-rev="118"
+   name="RPN.java"
+   text-time="2007-01-03T00:45:54.277000Z"
+   committed-date="2007-01-03T11:30:50.588275Z"
+   checksum="33f2841296167b876f4fed1f1d14b9a8"
+   last-author="tpreuss"
+   kind="file"/>
+<entry
+   committed-rev="118"
+   name="TestRPN.java"
+   text-time="2007-01-03T00:42:44.164000Z"
+   committed-date="2007-01-03T11:30:50.588275Z"
+   checksum="14c8c908466972165b5bdf4c60059624"
+   last-author="tpreuss"
+   kind="file"/>
+<entry
+   committed-rev="121"
+   name="IllegalPostfixException.java"
+   text-time="2007-01-03T19:56:56.130292Z"
+   committed-date="2007-01-03T21:12:22.533272Z"
+   checksum="8d75e7eb215c647b45039cd4d645f88e"
+   last-author="tpreuss"
+   kind="file"/>
+<entry
+   committed-rev="121"
+   name="UnknownOperatorException.java"
+   text-time="2007-01-03T21:15:00.576195Z"
+   committed-date="2007-01-03T21:12:22.533272Z"
+   checksum="7aa1174bcb7e2cc7999db368108026f2"
+   last-author="tpreuss"
+   kind="file"/>
+</wc-entries>
